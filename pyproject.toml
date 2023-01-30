@@ -10,6 +10,10 @@ starlite = "^1.48.1"
 sqlalchemy = "^1.4.46"
 uvicorn = "^0.20.0"
 aiosqlite = "^0.18.0"
+python-jose = "^3.3.0"
+cryptography = "^39.0.0"
+alembic = "^1.9.2"
+structlog = "^22.3.0"
 
 [tool.poetry.dev-dependencies]
 

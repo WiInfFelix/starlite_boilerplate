@@ -1,20 +1,20 @@
 import uvicorn
-from sqlalchemy import Column, Float, Integer, String, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Mapped, declarative_base
+from starlite import Starlite, StructLoggingConfig
 
-from starlite import DTOFactory, HTTPException, Starlite, get, post
-from starlite.plugins.sql_alchemy import SQLAlchemyConfig, SQLAlchemyPlugin
-from starlite.status_codes import HTTP_404_NOT_FOUND
-
+from src.app.controllers.auth_controller import login_handler, jwt_cookie_auth, register_user
 from src.app.controllers.user_controller import UserController
 from src.app.database.setup_db import on_startup, sqlalchemy_plugin
 
+
+logging_config = StructLoggingConfig()
+
 app = Starlite(
-    route_handlers=[UserController],
+    route_handlers=[UserController, login_handler, register_user],
     on_startup=[on_startup],
+    on_app_init=[jwt_cookie_auth.on_app_init],
     plugins=[sqlalchemy_plugin],
+    logging_config=logging_config,
 )
 
 if __name__ == '__main__':
-    uvicorn.run("src.app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("src.app.main:app", host="localhost", port=8000, reload=True)

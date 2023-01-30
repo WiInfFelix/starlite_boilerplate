@@ -7,9 +7,9 @@ from src.app.database.setup_db import Base, dto_factory
 class User(Base):
     __tablename__ = "users"
     id: Mapped[int] = Column(Integer, primary_key=True)
-    name: Mapped[str] = Column(String)
+    name: Mapped[str] = Column(String, unique=True)
     password: Mapped[str] = Column(String)
 
 
-UserCreateDTO = dto_factory("UserCreateDTO", User, exclude=["id"])
+UserCreateOrLoginDTO = dto_factory("UserCreateDTO", User, exclude=["id"])
 UserGetDTO = dto_factory("UserGetDTO", User, exclude=["password"])
